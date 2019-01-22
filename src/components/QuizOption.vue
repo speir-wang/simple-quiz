@@ -1,6 +1,8 @@
 <template>
-
-    <h2 @click.once="checkAnswer">{{option.answer}}<span> - You Answer </span></h2>
+    <v-chip>
+        <v-avatar class="teal">A</v-avatar>
+        <h2 @click.once="checkAnswer">{{option.answer}}<span> - You Answer </span></h2>
+    </v-chip>
 
 </template>
 

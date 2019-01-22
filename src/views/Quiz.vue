@@ -11,8 +11,8 @@
                     <v-flex
                         xs6
                         mb-5
-                        v-for="option in quiz.options"
-                        :key="option.answer"
+                        v-for="(option, index) in quiz.options"
+                        :key="index"
                     >
                         <QuizOption
                             ref="option"
@@ -59,7 +59,7 @@ export default {
     mounted() {
         let quizID = this.$route.params.id;
         axios
-            .get("http://localhost:3000/quizs/" + quizID)
+            .get("http://localhost:3000/quizzes/" + quizID)
             .then(response => {
                 // handle success
                 this.quiz = response.data;
@@ -74,7 +74,7 @@ export default {
             this.answerSubmitted = true;
 
             this.$refs.option.forEach(e => {
-                e.$el.classList.add(e.option.isCorrect.toString());
+                // e.$el.classList.add(e.option.isCorrect.toString());
                 e.$off("checkAnswer");
             });
         },
