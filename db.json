@@ -1,0 +1,70 @@
+{
+	"quizs": [
+		{
+			"id": 1,
+			"question": "Question A",
+			"options": [
+				{
+					"answer": "Answer 1",
+					"isCorrect": false
+				},
+				{
+					"answer": "Answer 2",
+					"isCorrect": false
+				},
+				{
+					"answer": "Answer 3",
+					"isCorrect": true
+				},
+				{
+					"answer": "Answer 4",
+					"isCorrect": false
+				}
+			]
+		},
+		{
+			"id": 2,
+			"question": "Question B",
+			"options": [
+				{
+					"answer": "Answer 1",
+					"isCorrect": false
+				},
+				{
+					"answer": "Answer 2",
+					"isCorrect": false
+				},
+				{
+					"answer": "Answer 3",
+					"isCorrect": true
+				},
+				{
+					"answer": "Answer 4",
+					"isCorrect": false
+				}
+			]
+		},
+		{
+			"id": 3,
+			"question": "Question C",
+			"options": [
+				{
+					"answer": "Answer 1",
+					"isCorrect": false
+				},
+				{
+					"answer": "Answer 2",
+					"isCorrect": false
+				},
+				{
+					"answer": "Answer 3",
+					"isCorrect": true
+				},
+				{
+					"answer": "Answer 4",
+					"isCorrect": false
+				}
+			]
+		}
+	]
+}
