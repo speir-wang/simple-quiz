@@ -1,8 +1,17 @@
 <template>
-    <v-chip>
-        <v-avatar class="teal">A</v-avatar>
-        <h2 @click.once="checkAnswer">{{option.answer}}<span> - You Answer </span></h2>
-    </v-chip>
+    <v-hover>
+        <v-chip
+            label
+            slot-scope="{hover}"
+            :class="`elevation-${hover ? 8 : 2}`"
+        >
+            <v-avatar
+                tile
+                class="teal"
+            >{{indexConvertion}}</v-avatar>
+            <h3 @click.once="checkAnswer">{{option}}</h3>
+        </v-chip>
+    </v-hover>
 
 </template>
 
@@ -12,7 +21,17 @@ export default {
     name: "quiz-option",
     props: {
         option: String,
-        optionClass: String
+        optionClass: String,
+        index: Number
+    },
+    computed: {
+        indexConvertion() {
+            // conver index to charactor,
+            // 65 is the charCode of "A"
+            // e.g. index 0 => A, index 1 => B
+            let charCode = 65 + this.index;
+            return String.fromCharCode(charCode);
+        }
     },
     methods: {
         checkAnswer(e) {
@@ -22,35 +41,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.clicked span {
-    display: inline;
-}
-h2 {
-    span {
-        display: none;
-        font-size: 16px;
-    }
-    font-size: 24px;
-    font-weight: bold;
-    &:hover {
-        cursor: pointer;
-        color: lighten($color: #2c3e50, $amount: 20);
-    }
-}
-
-.true {
-    color: green;
-    &:hover {
-        color: green;
-    }
-}
-
-.false {
-    color: red;
-    &:hover {
-        color: red;
-    }
+<style lang="scss" >
+.v-chip__content {
+    cursor: pointer !important;
 }
 </style>
 

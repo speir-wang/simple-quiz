@@ -10,7 +10,7 @@
                     align-center
                 >
                     <v-flex xs8>
-                        <h1 class="my-5 text-xs-left">{{quiz.question}}</h1>
+                        <h2 class="question my-5 text-xs-left">{{quiz.question}}</h2>
                     </v-flex>
                     <v-flex xs4>
                         <CountDownTimer
@@ -43,6 +43,7 @@
                                 <QuizOption
                                     ref="option"
                                     :option="option"
+                                    :index="index"
                                     :showSelect="showSelect"
                                     @checkAnswer="onCheckAnswer"
                                 />
@@ -52,10 +53,14 @@
                     <!-- Options End -->
 
                     <v-flex xs4>
-                        <router-link
+                        <v-btn
+                            color="info"
                             v-if="answerSubmitted"
                             :to="{name: 'quiz', params:{id: `${nextQuizID}`}}"
-                        >Next Quiz</router-link>
+                        >
+                            Next Quiz
+                        </v-btn>
+
                     </v-flex>
                 </v-layout>
             </v-container>
@@ -91,6 +96,7 @@ export default {
             .then(response => {
                 // handle success
                 this.quiz = response.data;
+                console.log(response.data);
             })
             .catch(function(error) {
                 // handle error
@@ -119,3 +125,14 @@ export default {
 </script>
 
 
+<style lang="scss" scoped>
+.question {
+    position: relative;
+    &:before {
+        content: "Q: ";
+        position: absolute;
+        left: -30px;
+        top: 0;
+    }
+}
+</style>

@@ -5,8 +5,8 @@ function generateQuizzes() {
 	for (let i = 1; i <= 15; i++) {
 		let option = [];
 
-		for (let j = 0; j < 4; j++) {
-			let wordLength = Math.floor(Math.random() * 5) + 2;
+		for (let j = 1; j <= 4; j++) {
+			let wordLength = Math.floor(Math.random() * 4) + 1;
 			option.push(faker.lorem.words(wordLength.toString()));
 		}
 
@@ -14,7 +14,7 @@ function generateQuizzes() {
 			id: i,
 			question: faker.lorem.paragraph(),
 			options: option,
-			answer: Math.floor(Math.random() * 4) + 1
+			answer: Math.floor(Math.random() * 4)
 		});
 	}
 	data.total = {
