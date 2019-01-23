@@ -9,12 +9,16 @@
                     wrap
                     align-center
                 >
-                    <v-flex xs8>
-                        <h2 class="question my-5 text-xs-left">{{quiz.question}}</h2>
+                    <v-flex
+                        xs8
+                        text-xs-left
+                    >
+                        <span>Question {{quiz.id}}: </span>
+                        <h2 class="question mb-5 mt-3">{{quiz.question}}</h2>
                     </v-flex>
                     <v-flex xs4>
                         <CountDownTimer
-                            :duration=15
+                            :duration=2
                             :answerSubmitted="answerSubmitted"
                             @timeFinished="onTimeFinished"
                         />
@@ -41,11 +45,10 @@
                                 :key="index"
                             >
                                 <QuizOption
+                                    @answerSelected="checkAnswer"
                                     ref="option"
                                     :option="option"
                                     :index="index"
-                                    :showSelect="showSelect"
-                                    @checkAnswer="onCheckAnswer"
                                 />
                             </v-flex>
                         </v-layout>
@@ -54,8 +57,8 @@
 
                     <v-flex xs4>
                         <v-btn
-                            color="info"
                             v-if="answerSubmitted"
+                            color="primary"
                             :to="{name: 'quiz', params:{id: `${nextQuizID}`}}"
                         >
                             Next Quiz
@@ -82,8 +85,7 @@ export default {
         return {
             answerSubmitted: false,
             quiz: null,
-            nextQuizID: parseInt(this.$route.params.id) + 1,
-            showSelect: false
+            nextQuizID: parseInt(this.$route.params.id) + 1
         };
     },
 
@@ -96,7 +98,7 @@ export default {
             .then(response => {
                 // handle success
                 this.quiz = response.data;
-                console.log(response.data);
+                // console.log(response.data);
             })
             .catch(function(error) {
                 // handle error
@@ -104,21 +106,19 @@ export default {
             });
     },
     methods: {
-        showAnswer() {
+        checkAnswer(index = index) {
+            if (index) {
+                console.log(index);
+            }
             this.answerSubmitted = true;
-
             this.$refs.option.forEach(e => {
                 // e.$el.classList.add(e.option.isCorrect.toString());
-                e.$off("checkAnswer");
+                e.$off("answerSelected");
             });
         },
-        onCheckAnswer(e) {
-            // once this function is fired, that means the user selects an answer, then we need to change the value of `answerSubmitted` and stop the timer.
-            e.target.classList.add("clicked");
-            this.showAnswer();
-        },
+
         onTimeFinished() {
-            this.showAnswer();
+            this.checkAnswer();
         }
     }
 };
@@ -126,13 +126,4 @@ export default {
 
 
 <style lang="scss" scoped>
-.question {
-    position: relative;
-    &:before {
-        content: "Q: ";
-        position: absolute;
-        left: -30px;
-        top: 0;
-    }
-}
 </style>

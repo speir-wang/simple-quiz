@@ -4,12 +4,13 @@
             label
             slot-scope="{hover}"
             :class="`elevation-${hover ? 8 : 2}`"
+            @click.once="answerSelected"
         >
             <v-avatar
                 tile
-                class="teal"
+                class="blue-grey white--text"
             >{{indexConvertion}}</v-avatar>
-            <h3 @click.once="checkAnswer">{{option}}</h3>
+            <h3>{{option}}</h3>
         </v-chip>
     </v-hover>
 
@@ -34,8 +35,8 @@ export default {
         }
     },
     methods: {
-        checkAnswer(e) {
-            this.$emit("checkAnswer", e);
+        answerSelected() {
+            this.$emit("answerSelected", this.index);
         }
     }
 };
@@ -44,6 +45,10 @@ export default {
 <style lang="scss" >
 .v-chip__content {
     cursor: pointer !important;
+}
+
+h3 {
+    pointer-events: none;
 }
 </style>
 

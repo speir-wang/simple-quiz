@@ -95,5 +95,6 @@ svg {
     stroke-dasharray: 440; /* this value is the pixel circumference of the circle */
     stroke-dashoffset: 0;
     transition: all 1s linear;
+    z-index: 99;
 }
 </style>
