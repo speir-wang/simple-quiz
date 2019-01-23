@@ -11,7 +11,7 @@
 export default {
     name: "quiz-option",
     props: {
-        option: Object,
+        option: String,
         optionClass: String
     },
     methods: {

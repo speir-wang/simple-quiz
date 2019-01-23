@@ -2,36 +2,64 @@
     <div class="quiz-card">
 
         <div v-if="quiz">
-            <h1 class="my-5">{{quiz.question}}</h1>
+
             <v-container>
                 <v-layout
                     row
                     wrap
+                    align-center
                 >
-                    <v-flex
-                        xs6
-                        mb-5
-                        v-for="(option, index) in quiz.options"
-                        :key="index"
-                    >
-                        <QuizOption
-                            ref="option"
-                            :option="option"
-                            :showSelect="showSelect"
-                            @checkAnswer="onCheckAnswer"
+                    <v-flex xs8>
+                        <h1 class="my-5 text-xs-left">{{quiz.question}}</h1>
+                    </v-flex>
+                    <v-flex xs4>
+                        <CountDownTimer
+                            :duration=15
+                            :answerSubmitted="answerSubmitted"
+                            @timeFinished="onTimeFinished"
                         />
+                    </v-flex>
+
+                </v-layout>
+
+                <v-layout
+                    row
+                    wrap
+                    align-center
+                >
+                    <!-- Options -->
+                    <v-flex xs8>
+                        <v-layout
+                            row
+                            wrap
+                        >
+                            <v-flex
+                                xs6
+                                my-3
+                                text-xs-left
+                                v-for="(option, index) in quiz.options"
+                                :key="index"
+                            >
+                                <QuizOption
+                                    ref="option"
+                                    :option="option"
+                                    :showSelect="showSelect"
+                                    @checkAnswer="onCheckAnswer"
+                                />
+                            </v-flex>
+                        </v-layout>
+                    </v-flex>
+                    <!-- Options End -->
+
+                    <v-flex xs4>
+                        <router-link
+                            v-if="answerSubmitted"
+                            :to="{name: 'quiz', params:{id: `${nextQuizID}`}}"
+                        >Next Quiz</router-link>
                     </v-flex>
                 </v-layout>
             </v-container>
 
-            <CountDownTimer
-                :duration=15
-                :answerSubmitted="answerSubmitted"
-                @timeFinished="onTimeFinished"
-            />
-            <div v-if="answerSubmitted">
-                <router-link :to="{name: 'quiz', params:{id: `${nextQuizID}`}}">Next Quiz</router-link>
-            </div>
         </div>
     </div>
 </template>
