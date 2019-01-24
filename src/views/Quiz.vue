@@ -13,7 +13,7 @@
                         xs8
                         text-xs-left
                     >
-                        <span class="subheading font-italic">Question {{quiz.id}}: </span>
+                        <span class="subheading font-italic">Question {{quiz.id}} of {{this.getTotal}}: </span>
                         <h2 class="question mb-5 mt-4">{{quiz.question}}</h2>
                     </v-flex>
                     <v-flex xs4>
@@ -31,7 +31,7 @@
                     wrap
                     align-center
                 >
-                    <!-- Options -->
+                    <!-- Options, probably need to extract this part into another components called Options -->
                     <v-flex xs8>
                         <v-layout
                             row
@@ -59,9 +59,9 @@
                         <v-btn
                             v-if="answerSubmitted"
                             color="primary"
-                            :to="{name: 'quiz', params:{id: `${nextQuizID}`}}"
+                            :to="changeRoute()"
                         >
-                            Next Quiz
+                            {{btnText}}
                         </v-btn>
 
                     </v-flex>
@@ -77,6 +77,7 @@
 import QuizOption from "@/components/QuizOption";
 import CountDownTimer from "@/components/CountDownTimer";
 import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
     name: "quiz",
@@ -85,20 +86,19 @@ export default {
         return {
             answerSubmitted: false,
             quiz: null,
-            nextQuizID: parseInt(this.$route.params.id) + 1
+            btnText: "Next Quiz"
         };
     },
 
     components: { QuizOption, CountDownTimer },
 
     mounted() {
-        console.log(process.env.VUE_APP_QUIZ);
-        console.log(process.env.VUE_APP_TOTAL);
         let quizID = this.$route.params.id;
         axios
-            .get("http://localhost:3000/quizzes/" + quizID)
+            .get(process.env.VUE_APP_QUIZ + quizID)
             .then(response => {
                 // handle success
+
                 this.quiz = response.data;
             })
             .catch(function(error) {
@@ -106,11 +106,52 @@ export default {
                 console.log(error);
             });
     },
+    computed: {
+        ...mapGetters(["getTotal"])
+    },
     methods: {
+        ...mapActions(["updateResult"]),
+        changeRoute() {
+            let nextRoute = {};
+            if (this.getTotal > parseInt(this.$route.params.id) + 1)
+                nextRoute = {
+                    name: "quiz",
+                    params: { id: `${parseInt(this.$route.params.id) + 1}` }
+                };
+            else {
+                nextRoute = {
+                    name: "result"
+                };
+                this.btnText = "Check Result";
+            }
+
+            return nextRoute;
+        },
         checkAnswer(selectedOption = null) {
+            let singleResult;
+
             if (selectedOption && selectedOption.index !== this.quiz.answer) {
                 selectedOption.$el.children[0].classList.add("red--text");
+
+                singleResult = {
+                    quizId: this.quiz.id,
+                    selectedOption: selectedOption.index,
+                    isSelectedOptionCorrect: false
+                };
+            } else if (selectedOption == null) {
+                singleResult = {
+                    quizId: this.quiz.id,
+                    selectedOption: null,
+                    isSelectedOptionCorrect: false
+                };
+            } else {
+                singleResult = {
+                    quizId: this.quiz.id,
+                    selectedOption: selectedOption.index,
+                    isSelectedOptionCorrect: true
+                };
             }
+
             this.answerSubmitted = true;
             this.$refs.option.forEach(e => {
                 if (e.index === this.quiz.answer) {
@@ -119,6 +160,8 @@ export default {
 
                 e.$off("answerSelected");
             });
+
+            this.updateResult(singleResult);
         },
 
         onTimeFinished() {

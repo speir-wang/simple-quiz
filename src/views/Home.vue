@@ -12,12 +12,6 @@
 
 <script>
 export default {
-    name: "welcome",
-
-    methods: {
-        startQuiz() {
-            console.log("Start quiz");
-        }
-    }
+    name: "welcome"
 };
 </script>

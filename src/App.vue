@@ -10,8 +10,15 @@
 
 <script>
 import "vuetify/dist/vuetify.min.css"; // Ensure you are using css-loader
-
-export default {};
+import { mapActions } from "vuex";
+export default {
+    mounted() {
+        this.setTotal();
+    },
+    methods: {
+        ...mapActions(["setTotal"])
+    }
+};
 </script>
 
 <style lang="scss">
