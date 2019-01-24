@@ -35,8 +35,8 @@ export default {
         }
     },
     methods: {
-        answerSelected() {
-            this.$emit("answerSelected", this.index);
+        answerSelected(e) {
+            this.$emit("answerSelected", this);
         }
     }
 };
@@ -45,10 +45,6 @@ export default {
 <style lang="scss" >
 .v-chip__content {
     cursor: pointer !important;
-}
-
-h3 {
-    pointer-events: none;
 }
 </style>
 

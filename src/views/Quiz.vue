@@ -18,7 +18,7 @@
                     </v-flex>
                     <v-flex xs4>
                         <CountDownTimer
-                            :duration=2
+                            :duration=10
                             :answerSubmitted="answerSubmitted"
                             @timeFinished="onTimeFinished"
                         />
@@ -98,7 +98,7 @@ export default {
             .then(response => {
                 // handle success
                 this.quiz = response.data;
-                // console.log(response.data);
+                console.log(response.data);
             })
             .catch(function(error) {
                 // handle error
@@ -106,13 +106,16 @@ export default {
             });
     },
     methods: {
-        checkAnswer(index = index) {
-            if (index) {
-                console.log(index);
+        checkAnswer(selectedOption = null) {
+            if (selectedOption && selectedOption.index !== this.quiz.answer) {
+                selectedOption.$el.children[0].classList.add("red--text");
             }
             this.answerSubmitted = true;
             this.$refs.option.forEach(e => {
-                // e.$el.classList.add(e.option.isCorrect.toString());
+                if (e.index === this.quiz.answer) {
+                    e.$el.children[0].classList.add("green--text");
+                }
+
                 e.$off("answerSelected");
             });
         },
