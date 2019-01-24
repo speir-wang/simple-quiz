@@ -12,7 +12,6 @@ export default new Vuex.Store({
 	mutations: {
 		setTotal(state, total) {
 			state.total = total;
-			console.log("SET TOTAL");
 		},
 		updateResult(state, singleResult) {
 			// so when people redo the quiz, it won't add a new object into the state.result

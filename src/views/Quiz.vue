@@ -45,7 +45,7 @@
                                 :key="index"
                             >
                                 <QuizOption
-                                    @answerSelected="checkAnswer"
+                                    @answerSelected="onSelectingAnswer"
                                     ref="option"
                                     :option="option"
                                     :index="index"
@@ -57,7 +57,7 @@
 
                     <v-flex xs4>
                         <v-btn
-                            v-if="answerSubmitted"
+                            v-if="answerSubmitted || timeFinished"
                             color="primary"
                             :to="changeRoute()"
                         >
@@ -85,6 +85,7 @@ export default {
     data() {
         return {
             answerSubmitted: false,
+            timeFinished: false,
             quiz: null,
             btnText: "Next Quiz"
         };
@@ -127,45 +128,50 @@ export default {
 
             return nextRoute;
         },
-        checkAnswer(selectedOption = null) {
-            let singleResult;
-
-            if (selectedOption && selectedOption.index !== this.quiz.answer) {
-                selectedOption.$el.children[0].classList.add("red--text");
-
-                singleResult = {
-                    quizId: this.quiz.id,
-                    selectedOption: selectedOption.index,
-                    isSelectedOptionCorrect: false
-                };
-            } else if (selectedOption == null) {
-                singleResult = {
-                    quizId: this.quiz.id,
-                    selectedOption: null,
-                    isSelectedOptionCorrect: false
-                };
-            } else {
-                singleResult = {
-                    quizId: this.quiz.id,
-                    selectedOption: selectedOption.index,
-                    isSelectedOptionCorrect: true
-                };
-            }
-
-            this.answerSubmitted = true;
+        showCorrectAnswer() {
             this.$refs.option.forEach(e => {
                 if (e.index === this.quiz.answer) {
                     e.$el.children[0].classList.add("green--text");
                 }
-
                 e.$off("answerSelected");
             });
+        },
+        saveAnswerToResult(
+            currentQuizID,
+            selectedOptionIndex,
+            isSelectedOptionCorrect
+        ) {
+            let singleResult = {
+                quizID: currentQuizID,
+                selectedOption: selectedOptionIndex,
+                isSelectedOptionCorrect: isSelectedOptionCorrect
+            };
 
             this.updateResult(singleResult);
         },
+        onSelectingAnswer(selectedOption = null) {
+            this.answerSubmitted = true;
+            this.showCorrectAnswer();
+            if (selectedOption && selectedOption.index !== this.quiz.answer) {
+                selectedOption.$el.children[0].classList.add("red--text");
+                this.saveAnswerToResult(
+                    this.quiz.id,
+                    selectedOption.index,
+                    false
+                );
+            } else {
+                this.saveAnswerToResult(
+                    this.quiz.id,
+                    selectedOption.index,
+                    true
+                );
+            }
+        },
 
         onTimeFinished() {
-            this.checkAnswer();
+            this.timeFinished = true;
+            this.showCorrectAnswer();
+            this.saveAnswerToResult(this.quiz.id, null, false);
         }
     }
 };
