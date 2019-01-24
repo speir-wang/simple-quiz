@@ -12,7 +12,7 @@
                 cy="81"
                 cx="81"
                 stroke-width="15"
-                stroke="#6fdb6f"
+                stroke="#009688"
                 fill="none"
             />
             <circle

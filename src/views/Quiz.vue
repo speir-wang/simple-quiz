@@ -13,8 +13,8 @@
                         xs8
                         text-xs-left
                     >
-                        <span>Question {{quiz.id}}: </span>
-                        <h2 class="question mb-5 mt-3">{{quiz.question}}</h2>
+                        <span class="subheading font-italic">Question {{quiz.id}}: </span>
+                        <h2 class="question mb-5 mt-4">{{quiz.question}}</h2>
                     </v-flex>
                     <v-flex xs4>
                         <CountDownTimer
@@ -92,13 +92,14 @@ export default {
     components: { QuizOption, CountDownTimer },
 
     mounted() {
+        console.log(process.env.VUE_APP_QUIZ);
+        console.log(process.env.VUE_APP_TOTAL);
         let quizID = this.$route.params.id;
         axios
             .get("http://localhost:3000/quizzes/" + quizID)
             .then(response => {
                 // handle success
                 this.quiz = response.data;
-                console.log(response.data);
             })
             .catch(function(error) {
                 // handle error
