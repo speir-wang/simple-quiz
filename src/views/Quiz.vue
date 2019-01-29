@@ -126,42 +126,25 @@ export default {
                 e.$off("answerSelected");
             });
         },
-        saveAnswerToResult(
-            currentQuizID,
-            selectedOptionIndex,
-            isSelectedOptionCorrect
-        ) {
-            let singleResult = {
-                quizID: currentQuizID,
-                selectedOption: selectedOptionIndex,
-                isSelectedOptionCorrect: isSelectedOptionCorrect
-            };
 
-            this.updateResult(singleResult);
-        },
         onSelectingAnswer(selectedOption = null) {
             this.answerSubmitted = true;
             this.showCorrectAnswer();
             if (selectedOption && selectedOption.index !== this.quiz.answer) {
                 selectedOption.$el.children[0].classList.add("red--text");
-                this.saveAnswerToResult(
-                    this.quiz.id,
-                    selectedOption.index,
-                    false
-                );
-            } else {
-                this.saveAnswerToResult(
-                    this.quiz.id,
-                    selectedOption.index,
-                    true
-                );
             }
+
+            let result = {
+                quizID: this.quiz.id,
+                userSelection: selectedOption.index
+            };
+            this.updateResult(result);
         },
 
         onTimeFinished() {
             this.timeFinished = true;
             this.showCorrectAnswer();
-            this.saveAnswerToResult(this.quiz.id, null, false);
+            this.updateResult(this.quiz.id, null);
         }
     }
 };

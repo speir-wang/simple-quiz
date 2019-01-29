@@ -8,8 +8,7 @@ export default new Vuex.Store({
 	state: {
 		// result: [],
 		total: null,
-		quiz: [],
-		currentQuestion: null
+		quiz: []
 	},
 	mutations: {
 		setTotal(state, total) {
@@ -17,11 +16,14 @@ export default new Vuex.Store({
 		},
 		setQuiz(state, quiz) {
 			state.quiz = quiz;
+		},
+		updateResult(state, result) {
+			// so when people redo the quiz, it won't add a new object into the state.quiz
+			let answeredQuestion = state.quiz.find(quiz => quiz.id === result.quizID);
+			answeredQuestion.userSelection = result.userSelection;
+
+			state.quiz = [...state.quiz.filter(quiz => quiz.id !== result.quizID), answeredQuestion];
 		}
-		// updateResult(state, singleResult) {
-		// 	// so when people redo the quiz, it won't add a new object into the state.result
-		// 	state.result = [...state.result.filter(result => result.quizID !== singleResult.quizID), singleResult];
-		// }
 	},
 	actions: {
 		setTotal({ commit }) {
@@ -52,15 +54,8 @@ export default new Vuex.Store({
 					console.log(error);
 				});
 		},
-		updateResult({ commit }, singleResult) {
-			/**
-			 * singleResult = {
-			 *      id: Number
-			 *      selectedOption: Number
-			 *      isSelectedOptionCorrect: Boolean
-			 * }
-			 */
-			// commit("updateResult", singleResult);
+		updateResult({ commit }, result) {
+			commit("updateResult", result);
 		}
 	},
 	getters: {
