@@ -144,7 +144,11 @@ export default {
         onTimeFinished() {
             this.timeFinished = true;
             this.showCorrectAnswer();
-            this.updateResult(this.quiz.id, null);
+            let result = {
+                quizID: this.quiz.id,
+                userSelection: null
+            };
+            this.updateResult(result);
         }
     }
 };

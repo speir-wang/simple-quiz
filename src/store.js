@@ -6,7 +6,6 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
-		// result: [],
 		total: null,
 		quiz: []
 	},
@@ -22,7 +21,13 @@ export default new Vuex.Store({
 			let answeredQuestion = state.quiz.find(quiz => quiz.id === result.quizID);
 			answeredQuestion.userSelection = result.userSelection;
 
-			state.quiz = [...state.quiz.filter(quiz => quiz.id !== result.quizID), answeredQuestion];
+			state.quiz = [
+				...state.quiz.map(quiz => {
+					if (quiz.id === result.quizID) quiz.userSelection = result.userSelection;
+
+					return quiz;
+				})
+			];
 		}
 	},
 	actions: {
