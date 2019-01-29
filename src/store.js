@@ -64,7 +64,7 @@ export default new Vuex.Store({
 		}
 	},
 	getters: {
-		// getResult: state => state.result,
+		getResult: state => state.quiz,
 		getTotal: state => state.total,
 		getSingleQuizWidthID: state => id => state.quiz.find(quiz => quiz.id === id)
 	}
