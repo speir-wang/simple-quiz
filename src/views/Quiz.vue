@@ -18,7 +18,7 @@
                     </v-flex>
                     <v-flex xs4>
                         <CountDownTimer
-                            :duration=10
+                            :duration=5
                             :answerSubmitted="answerSubmitted"
                             @timeFinished="onTimeFinished"
                         />
@@ -99,7 +99,6 @@ export default {
             .get(process.env.VUE_APP_QUIZ + quizID)
             .then(response => {
                 // handle success
-
                 this.quiz = response.data;
             })
             .catch(function(error) {
@@ -114,7 +113,7 @@ export default {
         ...mapActions(["updateResult"]),
         changeRoute() {
             let nextRoute = {};
-            if (this.getTotal > parseInt(this.$route.params.id) + 1)
+            if (this.getTotal >= parseInt(this.$route.params.id) + 1)
                 nextRoute = {
                     name: "quiz",
                     params: { id: `${parseInt(this.$route.params.id) + 1}` }
