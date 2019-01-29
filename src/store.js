@@ -6,17 +6,22 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
-		result: [],
-		total: null
+		// result: [],
+		total: null,
+		quiz: [],
+		currentQuestion: null
 	},
 	mutations: {
 		setTotal(state, total) {
 			state.total = total;
 		},
-		updateResult(state, singleResult) {
-			// so when people redo the quiz, it won't add a new object into the state.result
-			state.result = [...state.result.filter(result => result.quizID !== singleResult.quizID), singleResult];
+		setQuiz(state, quiz) {
+			state.quiz = quiz;
 		}
+		// updateResult(state, singleResult) {
+		// 	// so when people redo the quiz, it won't add a new object into the state.result
+		// 	state.result = [...state.result.filter(result => result.quizID !== singleResult.quizID), singleResult];
+		// }
 	},
 	actions: {
 		setTotal({ commit }) {
@@ -31,6 +36,22 @@ export default new Vuex.Store({
 					console.log(error);
 				});
 		},
+		setQuiz({ commit }) {
+			axios
+				.get(process.env.VUE_APP_QUIZ)
+				.then(response => {
+					// handle success
+					let quiz = response.data;
+					quiz.forEach(quizItem => {
+						quizItem.userSelection = null;
+					});
+					commit("setQuiz", quiz);
+				})
+				.catch(function(error) {
+					// handle error
+					console.log(error);
+				});
+		},
 		updateResult({ commit }, singleResult) {
 			/**
 			 * singleResult = {
@@ -39,15 +60,12 @@ export default new Vuex.Store({
 			 *      isSelectedOptionCorrect: Boolean
 			 * }
 			 */
-			commit("updateResult", singleResult);
+			// commit("updateResult", singleResult);
 		}
 	},
 	getters: {
-		getResult: state => {
-			return state.result;
-		},
-		getTotal: state => {
-			return state.total;
-		}
+		// getResult: state => state.result,
+		getTotal: state => state.total,
+		getSingleQuizWidthID: state => id => state.quiz.find(quiz => quiz.id === id)
 	}
 });

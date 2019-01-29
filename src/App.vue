@@ -14,9 +14,10 @@ import { mapActions } from "vuex";
 export default {
     mounted() {
         this.setTotal();
+        this.setQuiz();
     },
     methods: {
-        ...mapActions(["setTotal"])
+        ...mapActions(["setTotal", "setQuiz"])
     }
 };
 </script>

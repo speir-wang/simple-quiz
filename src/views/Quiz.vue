@@ -76,7 +76,6 @@
 // @ is an alias to /src
 import QuizOption from "@/components/QuizOption";
 import CountDownTimer from "@/components/CountDownTimer";
-import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -94,23 +93,15 @@ export default {
     components: { QuizOption, CountDownTimer },
 
     mounted() {
-        let quizID = this.$route.params.id;
-        axios
-            .get(process.env.VUE_APP_QUIZ + quizID)
-            .then(response => {
-                // handle success
-                this.quiz = response.data;
-            })
-            .catch(function(error) {
-                // handle error
-                console.log(error);
-            });
+        let quizID = parseInt(this.$route.params.id);
+        this.quiz = this.getSingleQuizWidthID(quizID);
     },
     computed: {
-        ...mapGetters(["getTotal"])
+        ...mapGetters(["getTotal", "getSingleQuizWidthID"])
     },
     methods: {
         ...mapActions(["updateResult"]),
+
         changeRoute() {
             let nextRoute = {};
             if (this.getTotal >= parseInt(this.$route.params.id) + 1)
