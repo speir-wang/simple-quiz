@@ -10,13 +10,13 @@
                 slot="items"
                 slot-scope="props"
             >
-                <td class="text-xs-center">{{ props.item.quizID }}</td>
-                <td class="text-xs-center">{{ indexConvertion(props.item.selectedOption) }}</td>
-                <td class="text-xs-center">{{ props.item.isSelectedOptionCorrect }}</td>
+                <td class="text-xs-center">{{ props.item.id }}</td>
+                <td class="text-xs-center">{{ indexConvertion(props.item.answer) }}</td>
+                <td class="text-xs-center">{{ props.item.answer === props.item.userSelection ? "Correct" : "Wrong"}}</td>
                 <td
                     class="text-xs-center"
                     ref="score"
-                >{{ props.item.isSelectedOptionCorrect ? 10 : 0 }}</td>
+                >{{ props.item.answer === props.item.userSelection ? 10 : 0 }}</td>
 
             </template>
             <template slot="footer">
@@ -83,7 +83,7 @@ export default {
     methods: {
         totalScore() {
             return this.getResult.reduce((total, singleResult) => {
-                singleResult.isSelectedOptionCorrect == true
+                singleResult.answer === singleResult.userSelection
                     ? (total += 10)
                     : (total += 0);
                 return total;
