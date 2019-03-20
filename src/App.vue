@@ -2,7 +2,10 @@
     <v-app id="app">
         <v-content>
             <v-container>
-                <router-view :key="$route.path"></router-view>
+                <!-- Keep alive keeps the state of the dynamic component -->
+                <keep-alive>
+                    <router-view :key="$route.path"></router-view>
+                </keep-alive>
             </v-container>
         </v-content>
     </v-app>
